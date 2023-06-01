@@ -1,0 +1,122 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{titling}
+\usepackage{amsmath}
+\usepackage[Symbol]{upgreek}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\DeclareUnicodeCharacter{2212}{-}
+\setlength{\droptitle}{-12em} 
+\makeatletter
+  \def\title@font{\Large\bfseries}
+  \let\ltx@maketitle\@maketitle
+  \def\@maketitle{\bgroup%
+    \let\ltx@title\@title%
+    \def\@title{\resizebox{\textwidth}{}{%
+      \mbox{\title@font\ltx@title}%
+    }}%
+    \ltx@maketitle%
+  \egroup}
+\title{Assignment 2 A Little Slice of \pi}
+\author{Design Document}
+\date{Derrick Ko - Winter 2023}
+\begin{document}
+\maketitle
+\section{Overview}
+Creating our own math functions that will be almost identical precision to the original C math library. 
+\section{bbp.c}
+This contains the implementation of the Bailey-Borwein-Plouffe formula to approximate $\pi$ and the function to return the number of computed terms.
+\subsection{double pi\textunderscore bbp(void)}
+approximate the value of $\pi$ using the Bailey-Borwein-Plouffe formula and track the number of computed terms.
+\[ p(n) = \sum_{k=0}^{n} 16^{-k} \times \frac{(k(120k + 151) +47)}{k(k(k(k(512k +1024)+712)+194)+15} \]
+\begin{itemize}
+    \item create a static global variable to keep track of computed terms
+    \item loop until $16^{-k}$ is less than EPSILON
+    \item each loop divide by 16 for the amount of loops. For example, Loop 1 divide by 16, Loop 2 divide by 256 etc.
+\end{itemize}
+
+\subsection{int pi\textunderscore bbp\textunderscore terms(void)}
+return the number of computed terms
+\section{e.c}
+ This contains the implementation of the Taylor series to approximate Euler’s number e and the function to return the number of computed terms.
+\subsection{double e(void)}
+approximate the value of e using the Taylor series and track the number of computed terms by means of a static variable local to the file.
+\[ \frac{x^k}{k!} = \frac{x^k-1}{(k-1)!} \times \frac{x}{k}\]
+\begin{itemize}
+\item create a static global variable to keep track of computed terms
+\item Loop until $\frac{x}{k}$ is less than EPSILON which means the value will be small enough to be negligible
+\item new = previous * current;
+\item previous = new;
+\item This effectively calculates the factorial using a shortcut since we know the previous output. 
+\end{itemize}
+
+\subsection{int e\textunderscore terms(void)}
+return the number of computed terms.
+\section{euler.c}
+This contains the implementation of Euler’s solution used to approximate $\pi$ and the function to return the number of computed terms.
+\subsection{double pi\textunderscore euler(void)}
+approximate the value of $\pi$ using the formula derived from Euler’s solution to the Basel problem. It should also track the number of computed terms.
+
+\[ p(n) = \sqrt{6 \sum_{k=1}^{n} \frac{1}{k^2}} \]
+\begin{itemize}
+   \item create a static global variable to keep track of computed terms
+   \item starting at 1 loop until $\frac{1}{k^2}$ is less than EPSILON which means the value will be small enough to be negligible
+   \item in the loop calculate $\frac{1}{k^2}$
+   \item after loop done calculate the sum of $\frac{1}{k^2}$ iterations and multiply it by 6 and sqrt it. 
+\end{itemize}
+\subsection{int pi\textunderscore euler\textunderscore terms(void)}
+return the number of computed terms
+\section{madhava.c}
+This contains the implementation of the Madhava series to approximate $\pi$ and the function to return the number of computed terms.
+\subsection{double pi\textunderscore madhava(void)}
+approximate the value of $\pi$ using the Madhava series and track the number of computed terms with a static variable, exactly like in e.c.
+\[ \sum\limits_{k=0}^{\infty} \frac{(-3)^{-k}}{2k+1}\]
+\[\frac{\pi}{2} 3^{-n-1} 3^{n+\frac{1}{2}} = \frac{\pi}{\sqrt{12}}\]
+\begin{itemize}
+    \item create a static global variable to keep track of computed terms
+    \item loop until $16^{-k}$ is less than EPSILON
+    \item (-1 or 1) negative or positive according to the iteration number
+    \item multiply by $\sqrt{12}$ to cancel out $\frac{\pi}{\sqrt{12}}$ which is $\pi$
+\end{itemize}
+\subsection{int pi\textunderscore madhava\textunderscore terms(void) }
+return the number of computed terms
+\section{viete.c}
+This contains the implementation of Viète’s formula to approximate $\pi$ and the function to return the number of computed factors.
+\subsection{double pi\textunderscore viete(void)}
+approximate the value of $\pi$ using Viète’s formula and track the number of computed factors.
+\[ \frac{2}{\pi} = \prod\limits_{k = 1}^{\infty} \frac{a_{i}}{2}\]
+\begin{itemize} 
+\item create a static global variable to keep track of computed terms
+\item loop until the iteration changes by smaller than EPSILON
+\item use the formula to calculate pi
+\end{itemize}
+
+\subsection{int pi\textunderscore viete\textunderscore factors(void)}
+return the number of computed factors
+\section{newton.c}
+This contains the implementation of the square root approximation using Newton’s method and the function to return the number of computed iterations.
+\subsection{double sqrt\textunderscore newton(double)}
+approximate the the square root of the argument passed to it using the Newton-Raphson method. This function should also track the number of iterations taken
+
+
+\begin{itemize}
+\item create a static global variable to keep track of computed terms
+\item using long's code of newton
+\end{itemize}
+\subsection{int sqrt\textunderscore newton\textunderscore iters(void) }
+returns the number of iterations taken.
+\section{mathlib-test.c}
+This contains the main() function which tests each of your math library functions.
+ \begin{itemize}
+\item -a : Runs all tests.
+\item -e : Runs e approximation test.
+\item -b : Runs Bailey-Borwein-Plouffe $\pi$ approximation test.
+\item -m : Runs Madhava $\pi$ approximation test.
+\item -r : Runs Euler sequence $\pi$ approximation test
+\item -v : Runs Viète $\pi$ approximation test.
+\item -n : Runs Newton-Raphson square root approximation tests.
+\item  -s : Enable printing of statistics to see computed terms and factors for each tested function.
+\item -h : Display a help message detailing program usage.
+ \end{itemize}
+\end{document}

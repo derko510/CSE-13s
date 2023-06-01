@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{color,soul}
+\usepackage{titling}
+\usepackage[affil-it]{authblk} 
+\setlength{\droptitle}{-10em} 
+\title{\Large \textbf Assignment 2 A Little Slice of $\pi$}
+\author{Writeup}
+\date{Derrick Ko - Winter 2023}
+\begin{document}
+\maketitle
+\section{Summary}
+\begin{itemize}
+\item Graphs displaying the difference between the values reported by your implemented functions and that
+of the math library’s. Use a UNIX tool — not some website — to produce these graphs. gnuplot is
+recommended. Attend section for examples of using gnuplot and other UNIX tools. An example script
+for using gnuplot to help plot your graphs will be supplied in the resources repository.
+\item Analysis and explanations for any discrepancies and findings that you learn from your testing.
+\end{itemize}
+\section{Notes}
+GNUPLOT seems like it only graphs up to the 3rd decimal place which is not highly precise but it gives the general idea of where my library and the math library converges. Lowering the value of EPSILON that it was defined at would increase the precision of the value and increase the terms it takes to get that value.
+\section{Graphs}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=8cm]{viete.pdf}
+    \caption{It took around the 6th iteration gnuplot graphs it at the same value as $\pi$. }
+\end{figure}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=8cm]{newton.pdf}
+    \caption{Only looking at the graph makes it seem like its very accurate to the libraries sqrt function. This seems accurate but when looking at the data difference on the output it shows errors only around the 15 decimal place. Other than that it is highly accurate to the library.}
+\end{figure}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=8cm]{madhava.pdf}
+    \caption{This goes into the negatives since how this formula works. It alternatives from positive and negative signs depending on the iteration. The sign starts at positive then negative. On the 5th iteration it was accurate to pi.}
+\end{figure}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=8cm]{bbp.pdf}
+    \caption{This was the fastest algorithm in finding the value of $\pi$. This algorithm is very fast since around the 2nd iteration it was at the value of $\pi$ within GNUPLOT.}
+\end{figure}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=8cm]{euler.pdf}
+    \caption{I printed every 10000 iterations so this is scaled down by 10000 units. This was the slowest out of all the algorithms of finding the value of $\pi$. Around the 1400000th iteration it reached $\pi$.}
+\end{figure}
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=8cm]{e.pdf}
+    \caption{This took around 7 iterations to get the value of e.}
+\end{figure}
+
+\end{document}
